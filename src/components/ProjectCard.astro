@@ -1,0 +1,245 @@
+---
+// ProjectCard.astro
+export interface Props {
+  title: string
+  description: string
+  tags: string[]
+  scope: string[]
+  image: string
+  imageAlt?: string
+  href?: string
+  imagePosition?: 'left' | 'right'
+}
+
+const {
+  title,
+  description,
+  tags,
+  scope,
+  image,
+  imageAlt = '',
+  href = '#',
+  imagePosition = 'left',
+} = Astro.props
+---
+
+<article class:list={['project-card', { 'image-right': imagePosition === 'right' }]}>
+  <div class="project-image">
+    <div class="window-chrome">
+      <span class="dot red" />
+      <span class="dot yellow" />
+      <span class="dot green" />
+      <span class="version-tag">ecd_v0.2.1.krl</span>
+    </div>
+    <img src={image} alt={imageAlt} loading="lazy" />
+  </div>
+
+  <div class="project-info">
+    <div class="tags">
+      {tags.map(tag => (
+        <span class="tag">#{tag}</span>
+      ))}
+    </div>
+
+    <h2 class="project-title">{title}</h2>
+    <p class="project-desc">{description}</p>
+
+    <div class="scope-row">
+      <span class="scope-label">SCOPE:</span>
+      {scope.map((s, i) => (
+        <>
+          <span class="scope-item">{s.toUpperCase()}</span>
+          {i < scope.length - 1 && <span class="scope-sep">,</span>}
+        </>
+      ))}
+    </div>
+
+    <a href={href} class="init-btn">
+      INITIALIZE MODULE
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+        <path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+</article>
+
+<style>
+  .project-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 1px;
+    font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+    transition: border-color 0.2s ease;
+  }
+
+  .project-card:hover {
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+
+  /* Flip layout when imagePosition="right" */
+  .project-card.image-right {
+    direction: rtl;
+  }
+
+  .project-card.image-right > * {
+    direction: ltr;
+  }
+
+  /* ── Image pane ── */
+  .project-image {
+    position: relative;
+    background: #111;
+    overflow: hidden;
+    min-height: 260px;
+  }
+
+  .project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(15%) contrast(1.05);
+    transition: transform 0.5s ease, filter 0.5s ease;
+  }
+
+  .project-card:hover .project-image img {
+    transform: scale(1.03);
+    filter: grayscale(0%) contrast(1.0);
+  }
+
+  /* Fake macOS window chrome bar */
+  .window-chrome {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 10px;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+  }
+
+  .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .dot.red    { background: #ff5f57; }
+  .dot.yellow { background: #febc2e; }
+  .dot.green  { background: #28c840; }
+
+  .version-tag {
+    margin-left: auto;
+    font-size: 0.6rem;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.08em;
+  }
+
+  /* ── Info pane ── */
+  .project-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 2rem 2.5rem;
+    background: #0a0a0a;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    color: #0d9e75;
+  }
+
+  .project-title {
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.01em;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .project-desc {
+    font-size: 0.75rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.45);
+    margin: 0;
+    max-width: 48ch;
+  }
+
+  .scope-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+  }
+
+  .scope-label {
+    color: rgba(255, 255, 255, 0.25);
+    margin-right: 2px;
+  }
+
+  .scope-item {
+    color: rgba(255, 255, 255, 0.35);
+  }
+
+  .scope-sep {
+    color: rgba(255, 255, 255, 0.2);
+  }
+
+  .init-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    align-self: flex-start;
+    padding: 0.5rem 1rem;
+    background: #0d9e75;
+    color: #fff;
+    text-decoration: none;
+    font-family: inherit;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    font-weight: 600;
+    border-radius: 3px;
+    margin-top: 0.25rem;
+    transition: background 0.15s ease, gap 0.2s ease;
+  }
+
+  .init-btn:hover {
+    background: #0b8a66;
+    gap: 10px;
+  }
+
+  /* ── Mobile: stack vertically ── */
+  @media (max-width: 768px) {
+    .project-card,
+    .project-card.image-right {
+      grid-template-columns: 1fr;
+      direction: ltr;
+    }
+
+    .project-image {
+      min-height: 200px;
+    }
+
+    .project-info {
+      padding: 1.5rem;
+    }
+  }
+</style>

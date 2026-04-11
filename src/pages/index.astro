@@ -1,17 +1,318 @@
 ---
+// src/pages/index.astro
+import Nav from '../components/Nav.astro'
+import Hero from '../components/Hero.astro'
+import ProjectCard from '../components/ProjectCard.astro'
+import BlogCard from '../components/BlogCard.astro'
+import { getCollection } from 'astro:content'
 
+const posts = (await getCollection('journal'))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .slice(0, 3)
+
+const projects = [ 
+  {
+    title: 'Neo-Analog Framework',
+    description: 'A CSS framework designed to replicate tactile industrial controls. Focuses on skeuomorphic depth, physical materiality, and high-performance animations for modern web environments.',
+    tags: ['design_system', 'frontend'],
+    scope: ['Component Library', 'Documentation', 'Visual Language'],
+    image: '/projects/neo-analog.jpg',
+    href: '/projects/neo-analog',
+    imagePosition: 'left' as const,
+  },
+  {
+    title: 'Looming Signal',
+    description: 'An experimental audio-visual preservation tool for web-based art. Capable of capturing high-fidelity interactions and rendering them as immutable archival objects.',
+    tags: ['archival', 'a_v_engine'],
+    scope: ['Signal Processing', 'WebRTC', 'Media Metadata'],
+    image: '/projects/looming-signal.jpg',
+    href: '/projects/looming-signal',
+    imagePosition: 'right' as const,
+  },
+  {
+    title: 'Ghost Protocol',
+    description: 'Privacy-first communication interface using localized encryption. Merges an brutalist aesthetic with military-grade security standards for secure data transmission.',
+    tags: ['encryption', 'ux'],
+    scope: ['Security Audit', 'UI/UX', 'Local-First Architecture'],
+    image: '/projects/ghost-protocol.jpg',
+    href: '/projects/ghost-protocol',
+    imagePosition: 'left' as const,
+  },
+]
 ---
 
+<!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Coming now now,chill</h1>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Alex Rivers — Creative Technologist & Digital Archivist" />
+    <title>Alex Rivers v1.0</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+
+  <body>
+    <Nav /> 
+
+    <main>
+      <!-- Hero -->
+      <Hero />
+
+      <div class="divider" />
+
+      <!-- Projects -->
+      <section class="section" aria-label="Recent deployments">
+        <header class="section-header">
+          <div>
+            <p class="eyebrow">— CORE OUTPUTS</p>
+            <h2 class="section-title">Recent Deployments</h2>
+          </div>
+          <a href="/projects" class="view-all">VIEW_ARCHIVE.sh ↗</a>
+        </header>
+
+        <div class="projects-list">
+          {projects.map(p => (
+            <ProjectCard {...p} />
+          ))}
+        </div>
+      </section>
+
+      <div class="divider" />
+
+      <!-- Journal -->
+      <section class="section" aria-label="System logs">
+        <header class="section-header">
+          <div>
+            <p class="eyebrow">— SYSTEM LOGS</p>
+            <h2 class="section-title">Journal Entries / Documentation</h2>
+          </div>
+          <a href="/journal" class="view-all">FULL_JOURNAL_ARCHIVE ↓</a>
+        </header>
+
+        <div class="blog-grid">
+          {posts.map(post => (
+            <BlogCard
+              title={post.data.title}
+              date={post.data.date}
+              slug={post.id}
+              excerpt={post.data.excerpt}
+            />
+          ))}
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span class="footer-copy">© 2026 NEO-ANALOG ARCHIVE. ALL RIGHTS RESERVED.</span>
+      <div class="footer-meta">
+        <span class="meta-item">
+          STATUS: <span class="meta-value online">ONLINE</span>
+        </span>
+        <span class="meta-item">
+          REGION: <span class="meta-value">US-WEST-2</span>
+        </span>
+      </div>
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="/directory">DIRECTORY</a>
+        <a href="/terminal">TERMINAL</a>
+        <a href="/source">SOURCE</a>
+        <a href="/status">STATUS</a>
+      </nav>
+    </footer>
+  </body>
 </html>
+
+<style is:global>
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  :root {
+    --accent: #0d9e75;
+    --accent-dark: #0b8a66;
+    --bg: #0a0a0a;
+    --bg-raised: #0d0d0d;
+    --border: rgba(255, 255, 255, 0.08);
+    --text-primary: #fff;
+    --text-muted: rgba(255, 255, 255, 0.45);
+    --text-faint: rgba(255, 255, 255, 0.2);
+    --mono: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: var(--mono);
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  img {
+    max-width: 100%;
+    display: block;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+</style>
+
+<style>
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 0 2rem;
+  }
+
+  /* ── Sections ── */
+  .section {
+    padding: 4rem 2rem;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+  }
+
+  .eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    color: var(--text-faint);
+    margin-bottom: 4px;
+  }
+
+  .section-title {
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+  }
+
+  .view-all {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--text-faint);
+    text-decoration: none;
+    transition: color 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .view-all:hover {
+    color: var(--accent);
+  }
+
+  /* ── Projects ── */
+  .projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  /* ── Blog grid ── */
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  /* ── Footer ── */
+  footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1.25rem 2rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: var(--text-faint);
+  }
+
+  .footer-meta {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .meta-value {
+    color: var(--text-muted);
+  }
+
+  .meta-value.online {
+    color: var(--accent);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .footer-links a {
+    color: var(--text-faint);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .footer-links a:hover {
+    color: var(--accent);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .section {
+      padding: 2.5rem 1rem;
+    }
+
+    .divider {
+      margin: 0 1rem;
+    }
+
+    .section-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .blog-grid {
+      grid-template-columns: 1fr;
+    }
+
+    footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+  }
+</style>

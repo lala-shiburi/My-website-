@@ -1,0 +1,121 @@
+---
+const navLinks = [
+  { label: 'Portfolio', href: '/' },
+  { label: 'Journal',   href: '/journal' },
+  { label: 'Engineering', href: '/engineering' },
+  { label: 'System',    href: '/system' },
+]
+
+const currentPath = Astro.url.pathname
+---
+
+<nav>
+  <a class="wordmark" href="/">
+    ALEX RIVERS <span class="version">v1.0</span>
+  </a>
+
+  <ul class="nav-links">
+    {navLinks.map(link => (
+      <li>
+        
+          href={link.href}
+          class:list={['nav-link', { active: currentPath === link.href }]}
+        >
+          {link.label.toUpperCase()}
+        </a>
+      </li>
+    ))}
+  </ul>
+
+  <a href="/connect" class="connect-btn">CONNECT</a>
+</nav>
+
+<style>
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    height: 52px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #0a0a0a;
+  }
+
+  .wordmark {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+
+  .version {
+    color: #0d9e75;
+    font-weight: 400;
+    margin-left: 4px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-link {
+    color: rgba(255, 255, 255, 0.45);
+    text-decoration: none;
+    transition: color 0.15s ease;
+    position: relative;
+    padding-bottom: 2px;
+  }
+
+  .nav-link:hover {
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .nav-link.active {
+    color: #fff;
+  }
+
+  /* The underline indicator on the active link */
+  .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #0d9e75;
+  }
+
+  .connect-btn {
+    padding: 0.4rem 1rem;
+    background: #0d9e75;
+    color: #fff;
+    text-decoration: none;
+    font-family: inherit;
+    font-size: inherit;
+    letter-spacing: inherit;
+    font-weight: 600;
+    border-radius: 3px;
+    transition: background 0.15s ease;
+  }
+
+  .connect-btn:hover {
+    background: #0b8a66;
+  }
+
+  /* Mobile: hide links, keep wordmark + button */
+  @media (max-width: 640px) {
+    .nav-links {
+      display: none;
+    }
+  }
+</style>

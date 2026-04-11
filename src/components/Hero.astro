@@ -1,0 +1,143 @@
+<section class="hero">
+  <div class="avatar-wrap">
+    <img src="/avatar.jpg" alt="Alex Rivers" class="avatar" />
+    <span class="archive-tag">ARCHIVIST_001</span>
+  </div>
+
+  <div class="hero-content">
+    <div class="status-bar">
+      <span class="status-dot" aria-hidden="true"></span>
+      IDENTITY / STATUS: ACTIVE
+    </div>
+
+    <h1>
+      Creative Technologist<br />
+      <span class="accent">&amp; Digital Archivist</span>
+    </h1>
+
+    <p class="bio">
+      Bridging the gap between legacy aesthetics and modern performance.
+      I build high-fidelity digital experiences that honor the tactility
+      of the past while engineering the foundations of the future.
+    </p>
+  </div>
+</section>
+
+<style>
+  .hero {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    padding: 3rem 2rem;
+    font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+  }
+
+  /* ── Avatar ── */
+  .avatar-wrap {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .avatar {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(20%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .archive-tag {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #0d9e75;
+    color: #fff;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    text-align: center;
+    padding: 3px 0;
+  }
+
+  /* ── Content ── */
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .status-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  /* The blinking status dot — pure CSS, no JS needed */
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #0d9e75;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.25; }
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: #fff;
+    margin: 0;
+    /* Staggered reveal on load */
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .accent {
+    color: #0d9e75;
+  }
+
+  .bio {
+    font-size: 0.8rem;
+    line-height: 1.75;
+    color: rgba(255, 255, 255, 0.5);
+    max-width: 52ch;
+    margin: 0;
+    font-family: 'JetBrains Mono', monospace;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 640px) {
+    .hero {
+      flex-direction: column;
+      gap: 1.5rem;
+      padding: 2rem 1rem;
+    }
+
+    .avatar {
+      width: 80px;
+      height: 80px;
+    }
+  }
+</style>
