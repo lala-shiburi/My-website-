@@ -5,40 +5,16 @@ import Hero from '../components/Hero.astro'
 import ProjectCard from '../components/ProjectCard.astro'
 import BlogCard from '../components/BlogCard.astro'
 import { getCollection } from 'astro:content'
+import teamflowImg from './../assets/images/teamflow.png'
 
 const posts = (await getCollection('journal'))
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
   .slice(0, 3)
 
-const projects = [ 
-  {
-    title: 'Neo-Analog Framework',
-    description: 'A CSS framework designed to replicate tactile industrial controls. Focuses on skeuomorphic depth, physical materiality, and high-performance animations for modern web environments.',
-    tags: ['design_system', 'frontend'],
-    scope: ['Component Library', 'Documentation', 'Visual Language'],
-    image: '/projects/neo-analog.jpg',
-    href: '/projects/neo-analog',
-    imagePosition: 'left' as const,
-  },
-  {
-    title: 'Looming Signal',
-    description: 'An experimental audio-visual preservation tool for web-based art. Capable of capturing high-fidelity interactions and rendering them as immutable archival objects.',
-    tags: ['archival', 'a_v_engine'],
-    scope: ['Signal Processing', 'WebRTC', 'Media Metadata'],
-    image: '/projects/looming-signal.jpg',
-    href: '/projects/looming-signal',
-    imagePosition: 'right' as const,
-  },
-  {
-    title: 'Ghost Protocol',
-    description: 'Privacy-first communication interface using localized encryption. Merges an brutalist aesthetic with military-grade security standards for secure data transmission.',
-    tags: ['encryption', 'ux'],
-    scope: ['Security Audit', 'UI/UX', 'Local-First Architecture'],
-    image: '/projects/ghost-protocol.jpg',
-    href: '/projects/ghost-protocol',
-    imagePosition: 'left' as const,
-  },
-]
+const projects = (await getCollection('projects'))
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
+
+ 
 ---
 
 <!doctype html>
@@ -46,8 +22,8 @@ const projects = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Alex Rivers — Creative Technologist & Digital Archivist" />
-    <title>Alex Rivers v1.0</title>
+    <meta name="description" content="Nhlalala Shiburi — Creative Technologist & Digital Archivist" />
+    <title>Nhlalala Shiburis v1.0</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -79,10 +55,17 @@ const projects = [
         </header>
 
         <div class="projects-list">
-          {projects.map(p => (
-            <ProjectCard {...p} />
+        {projects.map(p => (
+        <ProjectCard
+          title={p.data.title}
+          description={p.data.description}
+          tags={p.data.tags}
+          scope={p.data.scope}
+          image={p.data.image}
+          href={`/projects/${p.id}`}
+        />
           ))}
-        </div>
+      </div>
       </section>
 
       <div class="divider" />
@@ -111,13 +94,13 @@ const projects = [
     </main>
 
     <footer>
-      <span class="footer-copy">© 2026 NEO-ANALOG ARCHIVE. ALL RIGHTS RESERVED.</span>
+      <span class="footer-copy">© 2026 Lalacodess. ALL RIGHTS RESERVED.</span>
       <div class="footer-meta">
         <span class="meta-item">
           STATUS: <span class="meta-value online">ONLINE</span>
         </span>
         <span class="meta-item">
-          REGION: <span class="meta-value">US-WEST-2</span>
+          REGION: <span class="meta-value">PTA-NORTH-2</span>
         </span>
       </div>
       <nav class="footer-links" aria-label="Footer navigation">

@@ -2,8 +2,7 @@
 const navLinks = [
   { label: 'Portfolio', href: '/' },
   { label: 'Journal',   href: '/journal' },
-  { label: 'Engineering', href: '/engineering' },
-  { label: 'System',    href: '/system' },
+  
 ]
 
 const currentPath = Astro.url.pathname
@@ -11,13 +10,13 @@ const currentPath = Astro.url.pathname
 
 <nav>
   <a class="wordmark" href="/">
-    ALEX RIVERS <span class="version">v1.0</span>
+    Nhlalala Shiburi <span class="version">v1.0</span>
   </a>
 
   <ul class="nav-links">
     {navLinks.map(link => (
       <li>
-        
+        <a
           href={link.href}
           class:list={['nav-link', { active: currentPath === link.href }]}
         >

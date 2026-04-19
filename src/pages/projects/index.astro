@@ -1,0 +1,42 @@
+---
+// src/pages/projects/index.astro
+import Nav from '../../components/Nav.astro'
+import ProjectCard from '../../components/ProjectCard.astro'
+import { getCollection } from 'astro:content'
+
+const projects = (await getCollection('projects'))
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects</title>
+  </head>
+  <body>
+    <Nav />
+    <main>
+      <section class="section">
+        <header class="section-header">
+          <div>
+            <p class="eyebrow">— ALL PROJECTS</p>
+            <h2 class="section-title">Project Archive</h2>
+          </div>
+        </header>
+        <div class="projects-list">
+          {projects.map(p => (
+            <ProjectCard
+              title={p.data.title}
+              description={p.data.description}
+              tags={p.data.tags}
+              scope={p.data.scope}
+              image={p.data.image}
+              href={`/projects/${p.id}`}
+            />
+          ))}
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

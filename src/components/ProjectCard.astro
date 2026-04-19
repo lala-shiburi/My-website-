@@ -1,11 +1,12 @@
 ---
-// ProjectCard.astro
+
+import { Image } from 'astro:assets'
 export interface Props {
   title: string
   description: string
   tags: string[]
   scope: string[]
-  image: string
+  image: ImageMetadata 
   imageAlt?: string
   href?: string
   imagePosition?: 'left' | 'right'
@@ -31,7 +32,7 @@ const {
       <span class="dot green" />
       <span class="version-tag">ecd_v0.2.1.krl</span>
     </div>
-    <img src={image} alt={imageAlt} loading="lazy" />
+    <Image src={image} alt={imageAlt}  />
   </div>
 
   <div class="project-info">

@@ -1,0 +1,128 @@
+---
+// src/pages/projects/[slug].astro
+import Nav from '../../components/Nav.astro'
+import { getCollection } from 'astro:content'
+import { getEntry, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects')
+  return projects.map(project => ({
+    params: { slug: project.id },
+  }))
+ 
+}
+
+
+const { slug } = Astro.params
+const project = await getEntry('projects', slug)
+
+if (!project) return Astro.redirect('/404')
+
+const { Content } = await render(project)
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{project.data.title}</title>
+  </head>
+  <body>
+    <Nav />
+    <main>
+      <section class="project-page">
+        <a href="/projects" class="back-link">← Back to projects</a>
+
+        <header>
+          <h1>{project.data.title}</h1>
+          <p class="description">{project.data.description}</p>
+
+          <div class="meta">
+            <div class="tags">
+              {project.data.tags.map(tag => (
+                <span class="tag">{tag}</span>
+              ))}
+            </div>
+            <div class="scope">
+              {project.data.scope.map(item => (
+                <span class="scope-item">{item}</span>
+              ))}
+            </div>
+          </div>
+        </header>
+
+        <!-- Renders the markdown body -->
+        <article class="content">
+          <Content />
+        </article>
+      </section>
+    </main>
+  </body>
+</html>
+
+<style>
+  .project-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .back-link {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  .back-link:hover {
+    color: var(--accent);
+  }
+
+  h1 {
+    margin-top: 2rem;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .description {
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  .meta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+  }
+
+  .tag, .scope-item {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+
+  .tag {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .content {
+    margin-top: 3rem;
+    line-height: 1.8;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  .content :global(h2) {
+    color: var(--text-primary);
+    margin-top: 2rem;
+    font-size: 1.2rem;
+  }
+
+  .content :global(p) {
+    margin-top: 1rem;
+  }
+</style>
