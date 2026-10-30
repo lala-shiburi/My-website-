@@ -8,20 +8,29 @@ const posts = (await getCollection('journal'))
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
 ---
 
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Journal</title>
+    <meta name="description" content="Nhlalala Shiburi — Journal Archive" />
+    <title>Journal / Nhlalala Shiburi</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
+
   <body>
     <Nav />
+
     <main>
-      <section class="section">
+      <section class="section" aria-label="System logs">
         <header class="section-header">
           <div>
             <p class="eyebrow">— SYSTEM LOGS</p>
@@ -44,23 +53,69 @@ const posts = (await getCollection('journal'))
   </body>
 </html>
 
-<style>
+<style is:global>
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  :root {
+    --accent: #0d9e75;
+    --accent-dark: #0b8a66;
+    --bg: #0a0a0a;
+    --bg-raised: #0d0d0d;
+    --border: rgba(255, 255, 255, 0.08);
+    --text-primary: #fff;
+    --text-muted: rgba(255, 255, 255, 0.45);
+    --text-faint: rgba(255, 255, 255, 0.2);
+    --mono: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     background: var(--bg);
     color: var(--text-primary);
     font-family: var(--mono);
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
   }
 
+  img {
+    max-width: 100%;
+    display: block;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+</style>
+
+<style>
   main {
     max-width: 1200px;
     margin: 0 auto;
   }
 
+  /* ── Sections ── */
   .section {
     padding: 4rem 2rem;
   }
 
   .section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
     margin-bottom: 2rem;
   }
 
@@ -74,8 +129,11 @@ const posts = (await getCollection('journal'))
   .section-title {
     font-size: clamp(1.2rem, 2.5vw, 1.8rem);
     font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
   }
 
+  /* ── Blog grid ── */
   .blog-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -84,9 +142,16 @@ const posts = (await getCollection('journal'))
     border: 1px solid var(--border);
   }
 
+  /* ── Responsive ── */
   @media (max-width: 768px) {
     .section {
       padding: 2.5rem 1rem;
+    }
+
+    .section-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
     }
 
     .blog-grid {

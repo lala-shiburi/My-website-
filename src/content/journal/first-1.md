@@ -49,6 +49,6 @@ labels:
 
 ```
 Traefik sees the new labels, configures the route, and requests the SSL certificate instantly.
-## The Benefits
+## Final thoughts
 
 Self-hosting isn't just about saving money; it's about ownership. By building this architecture myself, I’ve created a flexible environment that grows with my projects. Whether it's a small internal tool or a production-grade API, I have the platform ready to host it.
